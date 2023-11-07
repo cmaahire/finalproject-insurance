@@ -3,7 +3,11 @@
 <suite name="softwaretestingmaterial" parallel="methods">
 	<test name="testngTest">
 		<classes>
-			<class name="com.project.staragile.insureme.InsureMeApplicationTests" />
+			<class name="com.project.staragile.insureme.TestContact">
+				<methods>
+				<include name="verifymessage1"/>
+				</methods>
+			</class>
 		</classes>
 	</test>	
 </suite>
