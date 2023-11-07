@@ -2,6 +2,12 @@ package com.project.staragile.insureme;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.junit.Assume;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -36,41 +42,75 @@ class InsureMeApplicationTests {
 	void verifyMessage() {
 		// TODO Auto-generated method stub
 
-		System.out.println("Regression test started for ContactUS page");
+		String urlToCheck = "http://54.183.232.28:8081/contact.html";
 
-		String expected = "Message Sent";
+		boolean isURLReachable = checkURLReachability(urlToCheck);
 
-		WebDriverManager.chromedriver().setup();
+		if (isURLReachable) {
 
-		  ChromeOptions chromeoptions = new ChromeOptions();
-		  chromeoptions.addArguments("--headless");
+			System.out.println("Regression test started for ContactUS page");
 
-		WebDriver driver = new ChromeDriver(chromeoptions);
+			String expected = "Message Sent";
 
-		driver.get("http://54.183.232.28:8081/contact.html");
-		driver.manage().window().maximize();
-		driver.findElement(By.id("inputName")).sendKeys("john");
-		System.out.println("Entered Name");
+			WebDriverManager.chromedriver().setup();
 
-		driver.findElement(By.id("inputNumber")).sendKeys("8888888888");
-		System.out.println("Entered Mobile number");
+			ChromeOptions chromeoptions = new ChromeOptions();
+			chromeoptions.addArguments("--headless");
 
-		driver.findElement(By.id("inputMail")).sendKeys("test@test.com");
-		System.out.println("Entered Email address");
+			WebDriver driver = new ChromeDriver(chromeoptions);
 
-		driver.findElement(By.id("inputMessage")).sendKeys("Test selenium");
-		System.out.println("Entered message");
+			driver.get("http://54.183.232.28:8081/contact.html");
+			driver.manage().window().maximize();
+			driver.findElement(By.id("inputName")).sendKeys("john");
+			System.out.println("Entered Name");
 
-		driver.findElement(By.id("my-button")).click();
-		System.out.println("Clicked on Send button");
+			driver.findElement(By.id("inputNumber")).sendKeys("8888888888");
+			System.out.println("Entered Mobile number");
 
-		String actualMessage = driver.findElement(By.id("response")).getText();
+			driver.findElement(By.id("inputMail")).sendKeys("test@test.com");
+			System.out.println("Entered Email address");
 
-		assertEquals(expected, actualMessage);
+			driver.findElement(By.id("inputMessage")).sendKeys("Test selenium");
+			System.out.println("Entered message");
 
-		System.out.println("Regression test completed for ContactUs Page");
-		driver.close();
+			driver.findElement(By.id("my-button")).click();
+			System.out.println("Clicked on Send button");
+
+			String actualMessage = driver.findElement(By.id("response")).getText();
+
+			assertEquals(expected, actualMessage);
+
+			System.out.println("Regression test completed for ContactUs Page");
+			driver.close();
+
+		} else {
+			Assume.assumeTrue("Skipping test because the URL is not reachable.", false);
+		}
 
 	}
-	
+
+	private boolean checkURLReachability(String urlString) {
+
+		try {
+			URL url = new URL(urlString);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+			// Set up a HEAD request to check the URL
+			connection.setRequestMethod("HEAD");
+
+			// Set a reasonable timeout (e.g., 5 seconds)
+			connection.setConnectTimeout(5000);
+
+			int responseCode = connection.getResponseCode();
+			return (responseCode == HttpURLConnection.HTTP_OK);
+		} catch (MalformedURLException e) {
+			// URL is not valid
+			return false;
+		} catch (IOException e) {
+			// URL is not reachable
+			return false;
+		}
+
+	}
+
 }
