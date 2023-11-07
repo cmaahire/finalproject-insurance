@@ -29,9 +29,9 @@ public class TestContact {
 
             WebDriverManager.chromedriver().setup();
             Thread.sleep(5000);
-//            ChromeOptions chromeoptions = new ChromeOptions();
-//            chromeoptions.addArguments("--headless");
-            WebDriver driver = new ChromeDriver();
+            ChromeOptions chromeoptions = new ChromeOptions();
+            chromeoptions.addArguments("--headless");
+            WebDriver driver = new ChromeDriver(chromeoptions);
             Thread.sleep(5000);
 
             driver.get("http://54.183.184.195:8081/contact.html");
