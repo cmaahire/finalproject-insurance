@@ -42,7 +42,7 @@ class InsureMeApplicationTests {
 	void verifyMessage() {
 		// TODO Auto-generated method stub
 
-		String urlToCheck = "http://54.183.232.28:8081/contact.html";
+		String urlToCheck = "http://52.53.182.232:8081/contact.html";
 
 		boolean isURLReachable = checkURLReachability(urlToCheck);
 
