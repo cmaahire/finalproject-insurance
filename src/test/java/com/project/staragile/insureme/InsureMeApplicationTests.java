@@ -39,10 +39,11 @@ class InsureMeApplicationTests {
 	}
 
 	@Test
-	void verifyMessage() {
+	void verifyMessage() throws InterruptedException {
 		// TODO Auto-generated method stub
 
 		String urlToCheck = "http://52.53.182.232:8081/contact.html";
+		Thread.sleep(5000);
 
 		boolean isURLReachable = checkURLReachability(urlToCheck);
 
