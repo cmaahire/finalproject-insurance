@@ -38,7 +38,7 @@ class InsureMeApplicationTests {
 		assertEquals(null, pService.searchPolicy());
 	}
 
-	@Test
+	/*@Test
 	void verifyMessage() throws InterruptedException {
 		// TODO Auto-generated method stub
 
@@ -55,12 +55,12 @@ class InsureMeApplicationTests {
 
 			WebDriverManager.chromedriver().setup();
 
-			ChromeOptions chromeoptions = new ChromeOptions();
-			chromeoptions.addArguments("--headless");
+//			ChromeOptions chromeoptions = new ChromeOptions();
+//			chromeoptions.addArguments("--headless");
 
-			WebDriver driver = new ChromeDriver(chromeoptions);
-
-			driver.get("http://54.183.232.28:8081/contact.html");
+			WebDriver driver = new ChromeDriver();
+			driver.get("https://www.facebook.com");
+//			driver.get("http://54.183.232.28:8081/contact.html");
 			driver.manage().window().maximize();
 			driver.findElement(By.id("inputName")).sendKeys("john");
 			System.out.println("Entered Name");
@@ -88,9 +88,9 @@ class InsureMeApplicationTests {
 			Assume.assumeTrue("Skipping test because the URL is not reachable.", false);
 		}
 
-	}
+	}*/
 
-	private boolean checkURLReachability(String urlString) {
+/*	private boolean checkURLReachability(String urlString) {
 
 		try {
 			URL url = new URL(urlString);
@@ -111,6 +111,72 @@ class InsureMeApplicationTests {
 			// URL is not reachable
 			return false;
 		}
+
+	}*/
+
+	@Test
+	void verifymessage1() throws InterruptedException {
+
+		String urlToCheck= "http://54.183.184.195:8081/contact.html";
+//		String urlToCheck= "https://www.facebook.com";
+		boolean isURLReachable = checkURLReachability(urlToCheck);
+
+		if(isURLReachable) {
+			System.out.println("Regression test started for ContactUS page");
+
+			String expected = "Message Sent";
+
+			WebDriverManager.chromedriver().setup();
+			ChromeOptions chromeoptions = new ChromeOptions();
+			chromeoptions.addArguments("--headless");
+			WebDriver driver = new ChromeDriver(chromeoptions);
+
+			driver.get("http://54.183.184.195:8081/contact.html");
+			Thread.sleep(5000);
+			driver.manage().window().maximize();
+			driver.findElement(By.id("inputName")).sendKeys("john");
+			System.out.println("Entered Name");
+
+			driver.findElement(By.id("inputNumber")).sendKeys("8888888888");
+			System.out.println("Entered Mobile number");
+
+			driver.findElement(By.id("inputMail")).sendKeys("test@test.com");
+			System.out.println("Entered Email address");
+
+			driver.findElement(By.id("inputMessage")).sendKeys("Test selenium");
+			System.out.println("Entered message");
+
+			driver.findElement(By.id("my-button")).click();
+			System.out.println("Clicked on Send button");
+
+			String actualMessage = driver.findElement(By.id("response")).getText();
+
+			assertEquals(expected, actualMessage);
+
+			System.out.println("Regression test completed for ContactUs Page");
+			driver.close();
+
+		} else {
+			Assume.assumeTrue("Skipping test because URL unreachable", false);
+		}
+
+	}
+
+	private boolean checkURLReachability(String urlString) {
+		try{
+			URL url = new URL(urlString);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+			connection.setRequestMethod("HEAD");
+			connection.setConnectTimeout(5000);
+			int responseCode =connection.getResponseCode();
+			return (responseCode == HttpURLConnection.HTTP_OK);
+		}catch(MalformedURLException e){
+			return false;
+		}catch (IOException e){
+			return false;
+		}
+
 
 	}
 
